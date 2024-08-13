@@ -3,16 +3,23 @@ package com.jabama.challenge.github
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import com.jabama.challenge.core.coroutines.IoScopeNamed
+import com.jabama.challenge.core.coroutines.MainScopeNamed
 import com.jabama.challenge.network.oauth.RequestAccessToken
 import com.jabama.challenge.repository.oauth.AccessTokenDataSource
 import com.jabama.challenge.repository.token.TokenRepository
 import kotlinx.android.synthetic.main.login_uri_activity.*
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.cancelAndJoin
+import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 class LoginUriActivity : Activity() {
     private val tokenRepository: TokenRepository by inject()
     private val accessTokenDataSource: AccessTokenDataSource by inject()
+    private val ioScope: CoroutineScope by inject(IoScopeNamed)
+    private val mainScope: CoroutineScope by inject(MainScopeNamed)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +34,7 @@ class LoginUriActivity : Activity() {
             val uri = intent.data
             val code = uri?.getQueryParameter("code") ?: ""
             code.takeIf { it.isNotEmpty() }?.let { code ->
-                val accessTokenJob = CoroutineScope(Dispatchers.IO).launch {
+                val accessTokenJob = ioScope.launch {
                     val response = accessTokenDataSource.accessToken(
                         RequestAccessToken(
                             CLIENT_ID,
@@ -42,7 +49,7 @@ class LoginUriActivity : Activity() {
                 }
 
                 accessTokenJob.invokeOnCompletion {
-                    CoroutineScope(Dispatchers.Main).launch {
+                    mainScope.launch {
                         token.text = tokenRepository.readToken().await()
                         this.cancel()
                         accessTokenJob.cancelAndJoin()
