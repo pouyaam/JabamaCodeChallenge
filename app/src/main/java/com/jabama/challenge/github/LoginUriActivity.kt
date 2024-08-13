@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.jabama.challenge.core.coroutines.IoScopeNamed
 import com.jabama.challenge.core.coroutines.MainScopeNamed
-import com.jabama.challenge.network.oauth.RequestAccessToken
+import com.jabama.challenge.core.network.oauth.RequestAccessToken
 import com.jabama.challenge.repository.oauth.AccessTokenDataSource
 import com.jabama.challenge.repository.token.TokenRepository
 import kotlinx.android.synthetic.main.login_uri_activity.*

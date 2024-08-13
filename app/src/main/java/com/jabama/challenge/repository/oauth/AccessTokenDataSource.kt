@@ -1,7 +1,7 @@
 package com.jabama.challenge.repository.oauth
 
-import com.jabama.challenge.network.oauth.RequestAccessToken
-import com.jabama.challenge.network.oauth.ResponseAccessToken
+import com.jabama.challenge.core.network.oauth.RequestAccessToken
+import com.jabama.challenge.core.network.oauth.ResponseAccessToken
 import kotlinx.coroutines.Deferred
 
 interface AccessTokenDataSource {

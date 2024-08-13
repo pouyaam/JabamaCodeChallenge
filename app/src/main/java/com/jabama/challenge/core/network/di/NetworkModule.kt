@@ -1,4 +1,4 @@
-package com.jabama.challenge.network.di
+package com.jabama.challenge.core.network.di
 
 import com.jabama.challenge.github.BuildConfig
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory

@@ -1,4 +1,4 @@
-package com.jabama.challenge.network.oauth
+package com.jabama.challenge.core.network.oauth
 
 import kotlinx.coroutines.Deferred
 import retrofit2.http.Body
