@@ -1,20 +1,16 @@
 package com.jabama.challenge.core.network.oauth
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class RequestAccessToken(
-    @SerializedName("client_id")
+    @SerialName("client_id")
     var clientId: String,
-
-    @SerializedName("client_secret")
+    @SerialName("client_secret")
     var clientSecret: String,
-
-    @SerializedName("code")
     var code: String,
-
-    @SerializedName("redirect_uri")
+    @SerialName("redirect_uri")
     var redirectUri: String,
-
-    @SerializedName("state")
     var state: String
 )

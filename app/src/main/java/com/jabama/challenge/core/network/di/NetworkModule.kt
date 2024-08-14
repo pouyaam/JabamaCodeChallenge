@@ -2,14 +2,15 @@ package com.jabama.challenge.core.network.di
 
 import com.jabama.challenge.core.network.adapter.NetworkCallAdapterFactory
 import com.jabama.challenge.github.BuildConfig
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.CallAdapter
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
 private const val READ_TIMEOUT = 30L
@@ -32,6 +33,8 @@ val networkModule = module {
         NetworkCallAdapterFactory()
     }
 
+    factory<Json> { Json { ignoreUnknownKeys = true } }
+
     single<OkHttpClient> {
         OkHttpClient.Builder()
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
@@ -44,7 +47,7 @@ val networkModule = module {
     single<Retrofit> {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(get<Json>().asConverterFactory("application/json".toMediaType()))
             .addCallAdapterFactory(get<CallAdapter.Factory>())
             .callFactory { request -> inject<OkHttpClient>().value.newCall(request) }
             .build()
