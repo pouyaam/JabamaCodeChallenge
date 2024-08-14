@@ -5,8 +5,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.async
 
-private const val TOKEN = "TOKEN"
-
 class TokenRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
     private val ioScope: CoroutineScope
@@ -17,4 +15,8 @@ class TokenRepositoryImpl(
 
     override fun readToken(): Deferred<String> =
         ioScope.async { sharedPreferences.getString(TOKEN, "") ?: "" }
+
+    companion object {
+        private const val TOKEN = "TOKEN"
+    }
 }
