@@ -37,10 +37,10 @@ class LoginUriActivity : Activity() {
                 val accessTokenJob = ioScope.launch {
                     val response = accessTokenDataSource.accessToken(
                         RequestAccessToken(
-                            CLIENT_ID,
-                            CLIENT_SECRET,
+                            BuildConfig.CLIENT_ID,
+                            BuildConfig.CLIENT_SECRET,
                             code,
-                            REDIRECT_URI,
+                            BuildConfig.REDIRECT_URI,
                             "0"
                         )
                     ).await()
