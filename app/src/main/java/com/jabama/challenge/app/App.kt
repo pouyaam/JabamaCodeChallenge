@@ -1,6 +1,7 @@
 package com.jabama.challenge.app
 
 import android.app.Application
+import com.jabama.challenge.app.di.mainModule
 import com.jabama.challenge.core.coroutines.coroutinesModule
 import com.jabama.challenge.core.di.coreModule
 import com.jabama.challenge.core.network.di.accessTokenModule
@@ -24,7 +25,8 @@ class App : Application() {
                     networkModule,
                     coroutinesModule,
                     accessTokenModule,
-                    tokenRepositoryModule
+                    tokenRepositoryModule,
+                    mainModule
                 )
             )
         }

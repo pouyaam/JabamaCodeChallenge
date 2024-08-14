@@ -1,26 +1,64 @@
 package com.jabama.challenge.app
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import com.jabama.challenge.github.BuildConfig
-import com.jabama.challenge.github.databinding.ActivityMainBinding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.jabama.challenge.core.ui.components.MainPageLoading
+import com.jabama.challenge.core.ui.components.RetryComponent
+import com.jabama.challenge.app.model.MainEvent
+import com.jabama.challenge.core.designsystem.theme.JabamaTheme
+import com.jabama.challenge.github.LoginUriActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        binding.authorize.setOnClickListener { view ->
-            val url = "https://github.com/login/oauth/authorize?client_id=${BuildConfig.CLIENT_ID}&redirect_uri=${BuildConfig.REDIRECT_URI}&scope=repo user&state=0"
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            startActivity(i)
+        setContent {
+            JabamaTheme {
+                val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+                
+                val event by viewModel.event.collectAsStateWithLifecycle(initialValue = null)
+                when (event) {
+                    MainEvent.NavigateToLoginPage -> navigateToLoginPage()
+                    MainEvent.NavigateToSearchPage -> TODO()
+                    null -> Unit
+                }
+
+                Scaffold { innerPadding ->
+                    if (uiState.isLoading) {
+                        MainPageLoading(
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize()
+                        )
+                    }
+
+                    if (uiState.isError) {
+                        RetryComponent(
+                            onClick = viewModel::retry,
+                            modifier = Modifier
+                                .padding(innerPadding)
+                                .fillMaxSize()
+                        )
+                    }
+                }
+            }
         }
+    }
+
+    private fun navigateToLoginPage() {
+        val intent = Intent(this, LoginUriActivity::class.java)
+        startActivity(intent)
     }
 }
