@@ -31,7 +31,7 @@ val networkModule = module {
             .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
             .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(get())
+            .addInterceptor(get<Interceptor>())
             .build()
     }
 
