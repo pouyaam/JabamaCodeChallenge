@@ -10,7 +10,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.jabama.challenge.core.designsystem.theme.JabamaTheme
 
 @Composable
-fun MainPageLoading(modifier: Modifier = Modifier) {
+fun LoadingComponent(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center
@@ -23,7 +23,7 @@ fun MainPageLoading(modifier: Modifier = Modifier) {
 @Composable
 private fun Preview() {
     JabamaTheme {
-        MainPageLoading(
+        LoadingComponent(
             modifier = Modifier.fillMaxSize()
         )
     }
