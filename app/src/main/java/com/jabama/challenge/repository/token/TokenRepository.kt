@@ -1,8 +1,8 @@
 package com.jabama.challenge.repository.token
 
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.flow.Flow
 
 interface TokenRepository {
-    fun saveToken(token: String) : Deferred<Unit>
-    fun readToken(): Deferred<String>
+    suspend fun saveToken(token: String)
+    fun readToken(): Flow<String>
 }

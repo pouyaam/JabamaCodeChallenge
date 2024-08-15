@@ -1,20 +1,25 @@
 package com.jabama.challenge.repository.token
 
 import android.content.SharedPreferences
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class TokenRepositoryImpl(
     private val sharedPreferences: SharedPreferences,
-    private val ioScope: CoroutineScope
+    private val ioDispatcher: CoroutineDispatcher
 ) : TokenRepository {
-    override fun saveToken(token: String): Deferred<Unit> =
-        ioScope.async { sharedPreferences.edit().apply { putString(TOKEN, token) }.apply() }
 
+    override suspend fun saveToken(token: String) {
+        sharedPreferences.edit().apply { putString(TOKEN, token) }.apply()
+    }
 
-    override fun readToken(): Deferred<String> =
-        ioScope.async { sharedPreferences.getString(TOKEN, "") ?: "" }
+    override fun readToken(): Flow<String> = flow {
+        emit(
+            sharedPreferences.getString(TOKEN, "") ?: ""
+        )
+    }.flowOn(ioDispatcher)
 
     companion object {
         private const val TOKEN = "TOKEN"

@@ -40,11 +40,14 @@ class MainViewModel(
         }
 
         viewModelScope.launch(exceptionHandler) {
-            val token = tokenRepository.readToken().await()
-
-            _event.emit(
-                if (token.isEmpty()) MainEvent.NavigateToLoginPage else MainEvent.NavigateToSearchPage
-            )
+            tokenRepository.readToken().collect { token ->
+                _event.emit(
+                    if (token.isEmpty())
+                        MainEvent.NavigateToLoginPage
+                    else
+                        MainEvent.NavigateToSearchPage
+                )
+            }
         }
     }
 
