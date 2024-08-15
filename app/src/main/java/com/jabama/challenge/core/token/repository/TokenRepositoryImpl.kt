@@ -8,6 +8,7 @@ import com.jabama.challenge.core.token.remote.datasource.AccessTokenDataSource
 import com.jabama.challenge.github.BuildConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
@@ -17,11 +18,13 @@ class TokenRepositoryImpl(
     private val ioDispatcher: CoroutineDispatcher
 ) : TokenRepository {
 
+    override val token: StateFlow<String> = preferencesDataSource.token
+
     override suspend fun saveToken(token: String)  =
         preferencesDataSource.saveToken(token)
 
-    override fun readToken(): Flow<String> =
-        preferencesDataSource.readToken()
+    override suspend fun invalidate() =
+        preferencesDataSource.invalidateToken()
 
     override fun fetchAccessToken(authorizeCode: String): Flow<Result<Unit, GeneralError>> =
         accessTokenDataSource.accessToken(

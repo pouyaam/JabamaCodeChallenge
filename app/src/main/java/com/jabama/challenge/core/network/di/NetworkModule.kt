@@ -1,5 +1,6 @@
 package com.jabama.challenge.core.network.di
 
+import com.jabama.challenge.core.network.GithubApiInterceptor
 import com.jabama.challenge.core.network.NetworkConstants
 import com.jabama.challenge.core.network.OAuthInterceptor
 import com.jabama.challenge.core.network.adapter.NetworkCallAdapterFactory
@@ -37,6 +38,8 @@ val networkModule = module {
 
     factory<Interceptor>(named(InterceptorType.OAUTH)) { OAuthInterceptor() }
 
+    single<Interceptor>(named(InterceptorType.GITHUB_API)) { GithubApiInterceptor(get()) }
+
     factory<CallAdapter.Factory> { NetworkCallAdapterFactory() }
 
     factory<Json> { Json { ignoreUnknownKeys = true } }
@@ -70,6 +73,7 @@ val networkModule = module {
             .writeTimeout(NetworkConstants.TimeOut.WRITE, TimeUnit.SECONDS)
             .connectTimeout(NetworkConstants.TimeOut.CONNECTION, TimeUnit.SECONDS)
             .addInterceptor(get<Interceptor>(named(InterceptorType.LOGGING)))
+            .addInterceptor(get<Interceptor>(named(InterceptorType.GITHUB_API)))
             .build()
     }
 

@@ -21,7 +21,7 @@ class MainViewModel(
     private val _uiState = MutableStateFlow(initialUiState)
     val uiState = _uiState.asStateFlow()
 
-    private val _event = MutableSharedFlow<MainEvent>()
+    private val _event = MutableSharedFlow<MainEvent>(replay = 1)
     val event = _event.asSharedFlow()
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
@@ -40,14 +40,12 @@ class MainViewModel(
         }
 
         viewModelScope.launch(exceptionHandler) {
-            tokenRepository.readToken().collect { token ->
-                _event.emit(
-                    if (token.isEmpty())
-                        MainEvent.NavigateToLoginPage
-                    else
-                        MainEvent.NavigateToSearchPage
-                )
-            }
+            _event.emit(
+                if (tokenRepository.token.value.isEmpty())
+                    MainEvent.NavigateToLoginPage
+                else
+                    MainEvent.NavigateToSearchPage
+            )
         }
     }
 
