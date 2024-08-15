@@ -7,14 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.jabama.challenge.core.ui.components.LoadingComponent
 import com.jabama.challenge.core.ui.components.RetryComponent
 import com.jabama.challenge.app.model.MainEvent
 import com.jabama.challenge.core.designsystem.theme.JabamaTheme
 import com.jabama.challenge.github.LoginUriActivity
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
@@ -27,12 +31,14 @@ class MainActivity : AppCompatActivity() {
         setContent {
             JabamaTheme {
                 val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-                
-                val event by viewModel.event.collectAsStateWithLifecycle(initialValue = null)
-                when (event) {
-                    MainEvent.NavigateToLoginPage -> navigateToLoginPage()
-                    MainEvent.NavigateToSearchPage -> TODO()
-                    null -> Unit
+
+                LaunchedEffect(Unit) {
+                    viewModel.event.onEach {
+                        when (it) {
+                            MainEvent.NavigateToLoginPage -> navigateToLoginPage()
+                            MainEvent.NavigateToSearchPage -> TODO()
+                        }
+                    }.launchIn(lifecycleScope)
                 }
 
                 Scaffold { innerPadding ->
