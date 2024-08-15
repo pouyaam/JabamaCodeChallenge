@@ -21,8 +21,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "CLIENT_ID", "\"$clientId\"")
-        buildConfigField("String", "CLIENT_SECRET", "\"$clientSecret\"")
+        buildConfigField("String", "CLIENT_ID", "\"$JABAMA_CLIENT_ID\"")
+        buildConfigField("String", "CLIENT_SECRET", "\"$JABAMA_CLIENT_SECRET\"")
         buildConfigField("String", "REDIRECT_URI", "\"$redirectUri\"")
     }
     buildTypes {
