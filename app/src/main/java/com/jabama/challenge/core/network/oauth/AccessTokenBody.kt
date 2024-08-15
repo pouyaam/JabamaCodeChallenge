@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RequestAccessToken(
+data class AccessTokenBody(
     @SerialName("client_id")
     var clientId: String,
     @SerialName("client_secret")
