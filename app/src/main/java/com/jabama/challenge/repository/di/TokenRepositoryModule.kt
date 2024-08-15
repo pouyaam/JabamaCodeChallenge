@@ -9,6 +9,7 @@ val tokenRepositoryModule = module {
     factory<TokenRepository> {
         TokenRepositoryImpl(
             sharedPreferences = get(),
+            accessTokenDataSource = get(),
             ioDispatcher = get(IoDispatcherNamed)
         )
     }
