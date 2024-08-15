@@ -16,8 +16,8 @@ import com.jabama.challenge.core.ui.components.LoadingComponent
 import com.jabama.challenge.core.ui.components.RetryComponent
 import com.jabama.challenge.app.model.MainEvent
 import com.jabama.challenge.core.designsystem.theme.JabamaTheme
-import com.jabama.challenge.feature.search.SearchActivity
-import com.jabama.challenge.github.LoginUriActivity
+import com.jabama.challenge.search.SearchActivity
+import com.jabama.challenge.login.LoginUriActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel

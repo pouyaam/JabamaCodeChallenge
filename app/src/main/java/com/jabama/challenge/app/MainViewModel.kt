@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jabama.challenge.app.model.MainEvent
 import com.jabama.challenge.app.model.MainUiState
-import com.jabama.challenge.repository.token.TokenRepository
+import com.jabama.challenge.core.token.repository.TokenRepository
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

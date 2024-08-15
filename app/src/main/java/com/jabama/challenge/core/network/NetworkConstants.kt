@@ -17,6 +17,7 @@ object NetworkConstants {
     }
 
     object OAuth {
+        const val NAME = "OAuth"
         private const val CLIENT_ID_QUERY = "client_id=${BuildConfig.CLIENT_ID}"
         private const val REDIRECT_QUERY = "redirect_uri=${BuildConfig.REDIRECT_URI}"
         private const val SCOPE_QUERY = "scope=repo user"
@@ -24,11 +25,12 @@ object NetworkConstants {
 
         const val BASE_URL = "https://github.com/"
         private const val OAUTH_ENDPOINT = "login/oauth/"
-        const val AUTHORIZE_URL = "${BASE_URL}${OAUTH_ENDPOINT}authorize?$CLIENT_ID_QUERY&$REDIRECT_QUERY&$SCOPE_QUERY&$STATE_QUERY"
+        const val AUTHORIZE_URL = "$BASE_URL${OAUTH_ENDPOINT}authorize?$CLIENT_ID_QUERY&$REDIRECT_QUERY&$SCOPE_QUERY&$STATE_QUERY"
         const val ACCESS_TOKEN = "${OAUTH_ENDPOINT}access_token"
     }
 
     object GithubAPI {
+        const val NAME = "GithubAPI"
         const val BASE_URL = "http://api.github.com/"
     }
 }

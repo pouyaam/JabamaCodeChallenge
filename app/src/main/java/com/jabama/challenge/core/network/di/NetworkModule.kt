@@ -1,9 +1,8 @@
 package com.jabama.challenge.core.network.di
 
 import com.jabama.challenge.core.network.NetworkConstants
+import com.jabama.challenge.core.network.OAuthInterceptor
 import com.jabama.challenge.core.network.adapter.NetworkCallAdapterFactory
-import com.jabama.challenge.core.network.oauth.AccessTokenService
-import com.jabama.challenge.core.network.oauth.OAuthInterceptor
 import com.jabama.challenge.github.BuildConfig
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
@@ -15,7 +14,6 @@ import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 private enum class InterceptorType {
@@ -24,10 +22,6 @@ private enum class InterceptorType {
 
 private enum class OkHttpClientType {
     OAUTH, GITHUB_API
-}
-
-private enum class RetrofitType {
-    OAUTH, GITHUB_API,
 }
 
 val networkModule = module {
@@ -59,7 +53,7 @@ val networkModule = module {
             .build()
     }
 
-    single<Retrofit>(named(RetrofitType.OAUTH)) {
+    single<Retrofit>(named(NetworkConstants.OAuth.NAME)) {
         Retrofit.Builder()
             .baseUrl(NetworkConstants.OAuth.BASE_URL)
             .addConverterFactory(get<Converter.Factory>())
@@ -79,7 +73,7 @@ val networkModule = module {
             .build()
     }
 
-    single<Retrofit>(named(RetrofitType.GITHUB_API)) {
+    single<Retrofit>(named(NetworkConstants.GithubAPI.NAME)) {
         Retrofit.Builder()
             .baseUrl(NetworkConstants.GithubAPI.BASE_URL)
             .addConverterFactory(get<Converter.Factory>())
@@ -89,6 +83,4 @@ val networkModule = module {
             }
             .build()
     }
-
-    factory <AccessTokenService> { inject<Retrofit>(named(RetrofitType.OAUTH)).value.create() }
 }

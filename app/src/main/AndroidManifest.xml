@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.jabama.challenge.github.LoginUriActivity"
+        <activity android:name="com.jabama.challenge.login.LoginUriActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name="com.jabama.challenge.feature.search.SearchActivity"
+            android:name="com.jabama.challenge.search.SearchActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
