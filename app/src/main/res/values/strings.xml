@@ -4,4 +4,9 @@
     <string name="authorize">AUTHORIZE</string>
     <string name="general_error">Something went wrong!</string>
     <string name="retry">Retry</string>
+
+    <string name="login_error_no_code_message">To use the application, you need to authenticate first.</string>
+    <string name="login_error_http_message">An error occurred while connecting to the server. Please try again.</string>
+    <string name="login_error_connection_message">Check your internet connection and try again.</string>
+    <string name="login_error_unknown_message">@string/general_error</string>
 </resources>

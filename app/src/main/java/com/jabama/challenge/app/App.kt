@@ -6,6 +6,7 @@ import com.jabama.challenge.core.coroutines.coroutinesModule
 import com.jabama.challenge.core.di.coreModule
 import com.jabama.challenge.core.network.di.accessTokenModule
 import com.jabama.challenge.core.network.di.networkModule
+import com.jabama.challenge.github.di.loginModule
 import com.jabama.challenge.repository.di.tokenRepositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -26,7 +27,8 @@ class App : Application() {
                     coroutinesModule,
                     accessTokenModule,
                     tokenRepositoryModule,
-                    mainModule
+                    mainModule,
+                    loginModule
                 )
             )
         }

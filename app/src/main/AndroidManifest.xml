@@ -23,12 +23,16 @@
         </activity>
 
         <activity android:name="com.jabama.challenge.github.LoginUriActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="challenge" />
+                <data
+                    android:scheme="jabama"
+                    android:host="callback" />
             </intent-filter>
         </activity>
 

@@ -16,6 +16,7 @@ import com.jabama.challenge.core.ui.components.LoadingComponent
 import com.jabama.challenge.core.ui.components.RetryComponent
 import com.jabama.challenge.app.model.MainEvent
 import com.jabama.challenge.core.designsystem.theme.JabamaTheme
+import com.jabama.challenge.feature.search.SearchActivity
 import com.jabama.challenge.github.LoginUriActivity
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,8 +37,9 @@ class MainActivity : AppCompatActivity() {
                     viewModel.event.onEach {
                         when (it) {
                             MainEvent.NavigateToLoginPage -> navigateToLoginPage()
-                            MainEvent.NavigateToSearchPage -> TODO()
+                            MainEvent.NavigateToSearchPage -> navigateToSearchPage()
                         }
+                        finish()
                     }.launchIn(lifecycleScope)
                 }
 
@@ -66,6 +68,11 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToLoginPage() {
         val intent = Intent(this, LoginUriActivity::class.java)
         startActivity(intent)
-        finish()
+    }
+
+    private fun navigateToSearchPage() {
+        Intent(this, SearchActivity::class.java).also {
+            startActivity(it)
+        }
     }
 }
