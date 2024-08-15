@@ -7,6 +7,7 @@ import com.jabama.challenge.core.prefs.di.preferencesModule
 import com.jabama.challenge.core.network.di.networkModule
 import com.jabama.challenge.core.token.di.tokenModule
 import com.jabama.challenge.login.di.loginModule
+import com.jabama.challenge.search.di.searchModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -27,6 +28,7 @@ class App : Application() {
                     tokenModule,
                     mainModule,
                     loginModule,
+                    searchModule
                 )
             )
         }

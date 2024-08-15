@@ -8,8 +8,8 @@ object NetworkConstants {
 
     object TimeOut {
         const val READ = 30L
-        const val WRITE = 10L
-        const val CONNECTION = 10L
+        const val WRITE = 30L
+        const val CONNECTION = 30L
     }
 
     object Header {
@@ -31,6 +31,7 @@ object NetworkConstants {
 
     object GithubAPI {
         const val NAME = "GithubAPI"
-        const val BASE_URL = "http://api.github.com/"
+        const val BASE_URL = "https://api.github.com/"
+        const val SEARCH_REPOSITORIES = "search/repositories"
     }
 }
