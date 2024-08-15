@@ -1,26 +1,38 @@
 package com.jabama.challenge.core.network.di
 
+import com.jabama.challenge.core.network.NetworkConstants
 import com.jabama.challenge.core.network.adapter.NetworkCallAdapterFactory
+import com.jabama.challenge.core.network.oauth.AccessTokenService
+import com.jabama.challenge.core.network.oauth.OAuthInterceptor
 import com.jabama.challenge.github.BuildConfig
 import kotlinx.serialization.json.Json
 import okhttp3.Interceptor
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.core.qualifier.named
 import org.koin.dsl.module
 import retrofit2.CallAdapter
+import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.create
 import java.util.concurrent.TimeUnit
 
-private const val READ_TIMEOUT = 30L
-private const val WRITE_TIMEOUT = 10L
-private const val CONNECTION_TIMEOUT = 10L
-private const val BASE_URL = "http://api.github.com"
+private enum class InterceptorType {
+    LOGGING, OAUTH, GITHUB_API
+}
+
+private enum class OkHttpClientType {
+    OAUTH, GITHUB_API
+}
+
+private enum class RetrofitType {
+    OAUTH, GITHUB_API,
+}
 
 val networkModule = module {
 
-    factory<Interceptor> {
+    factory<Interceptor>(named(InterceptorType.LOGGING)) {
         HttpLoggingInterceptor().apply {
             level = if (BuildConfig.DEBUG)
                 HttpLoggingInterceptor.Level.BODY
@@ -29,27 +41,54 @@ val networkModule = module {
         }
     }
 
-    factory<CallAdapter.Factory> {
-        NetworkCallAdapterFactory()
-    }
+    factory<Interceptor>(named(InterceptorType.OAUTH)) { OAuthInterceptor() }
+
+    factory<CallAdapter.Factory> { NetworkCallAdapterFactory() }
 
     factory<Json> { Json { ignoreUnknownKeys = true } }
 
-    single<OkHttpClient> {
+    factory<Converter.Factory> { get<Json>().asConverterFactory(NetworkConstants.MEDIA_TYPE) }
+
+    single<OkHttpClient>(named(OkHttpClientType.OAUTH)) {
         OkHttpClient.Builder()
-            .readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
-            .writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-            .connectTimeout(CONNECTION_TIMEOUT, TimeUnit.SECONDS)
-            .addInterceptor(get<Interceptor>())
+            .readTimeout(NetworkConstants.TimeOut.READ, TimeUnit.SECONDS)
+            .writeTimeout(NetworkConstants.TimeOut.WRITE, TimeUnit.SECONDS)
+            .connectTimeout(NetworkConstants.TimeOut.CONNECTION, TimeUnit.SECONDS)
+            .addInterceptor(get<Interceptor>(named(InterceptorType.LOGGING)))
+            .addInterceptor(get<Interceptor>(named(InterceptorType.OAUTH)))
             .build()
     }
 
-    single<Retrofit> {
+    single<Retrofit>(named(RetrofitType.OAUTH)) {
         Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(get<Json>().asConverterFactory("application/json".toMediaType()))
+            .baseUrl(NetworkConstants.OAuth.BASE_URL)
+            .addConverterFactory(get<Converter.Factory>())
             .addCallAdapterFactory(get<CallAdapter.Factory>())
-            .callFactory { request -> inject<OkHttpClient>().value.newCall(request) }
+            .callFactory { request ->
+                inject<OkHttpClient>(named(OkHttpClientType.OAUTH)).value.newCall(request)
+            }
             .build()
     }
+
+    single<OkHttpClient>(named(OkHttpClientType.GITHUB_API)) {
+        OkHttpClient.Builder()
+            .readTimeout(NetworkConstants.TimeOut.READ, TimeUnit.SECONDS)
+            .writeTimeout(NetworkConstants.TimeOut.WRITE, TimeUnit.SECONDS)
+            .connectTimeout(NetworkConstants.TimeOut.CONNECTION, TimeUnit.SECONDS)
+            .addInterceptor(get<Interceptor>(named(InterceptorType.LOGGING)))
+            .build()
+    }
+
+    single<Retrofit>(named(RetrofitType.GITHUB_API)) {
+        Retrofit.Builder()
+            .baseUrl(NetworkConstants.GithubAPI.BASE_URL)
+            .addConverterFactory(get<Converter.Factory>())
+            .addCallAdapterFactory(get<CallAdapter.Factory>())
+            .callFactory { request ->
+                inject<OkHttpClient>(named(OkHttpClientType.GITHUB_API)).value.newCall(request)
+            }
+            .build()
+    }
+
+    factory <AccessTokenService> { inject<Retrofit>(named(RetrofitType.OAUTH)).value.create() }
 }

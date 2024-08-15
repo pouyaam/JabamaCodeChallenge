@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.jabama.challenge.core.designsystem.theme.JabamaTheme
+import com.jabama.challenge.core.network.NetworkConstants
 import com.jabama.challenge.core.ui.components.LoadingComponent
 import com.jabama.challenge.core.ui.components.RetryComponent
 import com.jabama.challenge.feature.search.SearchActivity
@@ -90,7 +91,7 @@ class LoginUriActivity : AppCompatActivity() {
     }
 
     private fun openGithubAuthorizePage() {
-        Intent(Intent.ACTION_VIEW, Uri.parse(AUTHORIZE_URL)).also {
+        Intent(Intent.ACTION_VIEW, Uri.parse(NetworkConstants.OAuth.AUTHORIZE_URL)).also {
             startActivity(it)
         }
     }
@@ -103,7 +104,6 @@ class LoginUriActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val AUTHORIZE_URL = "https://github.com/login/oauth/authorize?client_id=${BuildConfig.CLIENT_ID}&redirect_uri=${BuildConfig.REDIRECT_URI}&scope=repo user&state=0"
         private const val CODE_KEY = "code"
     }
 }
