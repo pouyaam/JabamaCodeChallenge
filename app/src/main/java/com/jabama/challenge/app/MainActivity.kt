@@ -10,7 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.jabama.challenge.core.ui.components.MainPageLoading
+import com.jabama.challenge.core.ui.components.LoadingComponent
 import com.jabama.challenge.core.ui.components.RetryComponent
 import com.jabama.challenge.app.model.MainEvent
 import com.jabama.challenge.core.designsystem.theme.JabamaTheme
@@ -37,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
                 Scaffold { innerPadding ->
                     if (uiState.isLoading) {
-                        MainPageLoading(
+                        LoadingComponent(
                             modifier = Modifier
                                 .padding(innerPadding)
                                 .fillMaxSize()
@@ -60,5 +60,6 @@ class MainActivity : AppCompatActivity() {
     private fun navigateToLoginPage() {
         val intent = Intent(this, LoginUriActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
