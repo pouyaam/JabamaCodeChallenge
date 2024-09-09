@@ -17,3 +17,12 @@ dependencyResolutionManagement {
 
 include(":app")
 rootProject.name = "Github"
+include(":feature:login")
+include(":feature:search")
+include(":common")
+include(":feature:login:presentation")
+include(":feature:login:domain")
+include(":feature:login:data")
+include(":feature:search:presentation")
+include(":feature:search:domain")
+include(":feature:search:data")
