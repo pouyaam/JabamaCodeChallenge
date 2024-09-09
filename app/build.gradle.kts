@@ -1,6 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.org.jetbrains.kotlin.android)
 }
 
 android {
@@ -30,26 +30,25 @@ android {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.23")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("io.insert-koin:koin-android:3.0.1")
-//    implementation 'org.koin:koin-android-viewmodel:2.0.1'
+    implementation(libs.kotlin.stdlib.jdk7)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.ktx)
+    implementation(libs.androidx.constraintlayout)
+    implementation(libs.material)
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.koin.android)
 
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.23")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-    implementation("androidx.preference:preference-ktx:1.2.1")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2")
+    implementation(libs.kotlin.stdlib.jdk7)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.logging.interceptor)
+    implementation(libs.androidx.preference.ktx)
+    implementation(libs.converter.gson)
+    implementation(libs.retrofit2.kotlin.coroutines.adapter)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test:runner:1.6.2")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.runner)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
