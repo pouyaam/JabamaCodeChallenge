@@ -3,10 +3,10 @@ package com.jabama.challenge.github
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.TextView
 import com.jabama.challenge.network.oauth.RequestAccessToken
 import com.jabama.challenge.repository.oauth.AccessTokenDataSource
 import com.jabama.challenge.repository.token.TokenRepository
-import kotlinx.android.synthetic.main.login_uri_activity.*
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 
@@ -43,7 +43,7 @@ class LoginUriActivity : Activity() {
 
                 accessTokenJob.invokeOnCompletion {
                     CoroutineScope(Dispatchers.Main).launch {
-                        token.text = tokenRepository.readToken().await()
+                        findViewById<TextView>(R.id.token).text = tokenRepository.readToken().await()
                         this.cancel()
                         accessTokenJob.cancelAndJoin()
                     }
