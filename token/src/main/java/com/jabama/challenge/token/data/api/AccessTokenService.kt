@@ -1,6 +1,7 @@
-package com.jabama.challenge.network.oauth
+package com.jabama.challenge.token.data.api
 
-import kotlinx.coroutines.Deferred
+import com.jabama.challenge.token.domain.model.request.RequestAccessToken
+import com.jabama.challenge.token.domain.model.response.ResponseAccessToken
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST
