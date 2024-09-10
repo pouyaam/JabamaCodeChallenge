@@ -41,9 +41,13 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.activity.compose)
+    implementation(project(":common"))
+    implementation(project(":token"))
+
+    implementation(libs.koin.android)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
-    implementation(libs.compose.glide)
+    debugImplementation(libs.androidx.ui.tooling)
 
 }
