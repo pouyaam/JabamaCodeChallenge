@@ -2,8 +2,8 @@ package com.jabama.challenge.app
 
 import android.app.Application
 import androidx.preference.PreferenceManager
+import com.jabama.challenge.common.di.networkModule
 import com.jabama.challenge.network.di.accessTokenModule
-import com.jabama.challenge.network.di.networkModule
 import com.jabama.challenge.repository.token.TokenRepositoryImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

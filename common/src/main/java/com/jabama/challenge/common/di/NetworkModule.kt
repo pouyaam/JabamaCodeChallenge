@@ -1,8 +1,5 @@
-package com.jabama.challenge.network.di
+package com.jabama.challenge.common.di
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.jabama.challenge.repository.token.TokenRepository
-import com.jabama.challenge.repository.token.TokenRepositoryImpl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,11 +14,13 @@ const val RETROFIT = "RETROFIT"
 const val READ_TIMEOUT = "READ_TIMEOUT"
 const val WRITE_TIMEOUT = "WRITE_TIMEOUT"
 const val CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT"
+const val BASE_URL = "BASE_URL"
 val networkModule = module {
 
     single(named(READ_TIMEOUT)) { 30 * 1000 }
     single(named(WRITE_TIMEOUT)) { 10 * 1000 }
     single(named(CONNECTION_TIMEOUT)) { 10 * 1000 }
+    single(named(BASE_URL)) { "http://api.github.com/" }
 
     factory<Interceptor> {
         HttpLoggingInterceptor()
@@ -41,13 +40,8 @@ val networkModule = module {
     single(named(RETROFIT)) {
         Retrofit.Builder()
             .client(get(named(OK_HTTP)))
-            .baseUrl("http://api.github.com")
+            .baseUrl(get<String>(named(BASE_URL)))
             .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
-    }
-
-    single {
-        TokenRepositoryImpl(get()) as TokenRepository
     }
 }
