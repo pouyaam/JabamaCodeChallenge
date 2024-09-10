@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
-import com.jabama.challenge.network.oauth.RequestAccessToken
-import com.jabama.challenge.repository.oauth.AccessTokenDataSource
+import com.jabama.challenge.common.constants.CLIENT_ID
+import com.jabama.challenge.common.constants.CLIENT_SECRET
+import com.jabama.challenge.common.constants.REDIRECT_URI
 import com.jabama.challenge.repository.token.TokenRepository
+import com.jabama.challenge.token.domain.model.request.RequestAccessToken
+import com.jabama.challenge.token.domain.repo.AccessTokenDataSource
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 
@@ -36,7 +39,7 @@ class LoginUriActivity : Activity() {
                             REDIRECT_URI,
                             "0"
                         )
-                    ).await()
+                    )
 
                     tokenRepository.saveToken(response.accessToken).await()
                 }

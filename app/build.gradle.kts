@@ -35,6 +35,7 @@ android {
 dependencies {
 
     implementation(project(":common"))
+    implementation(project(":token"))
 
     implementation(libs.kotlin.stdlib.jdk7)
     implementation(libs.androidx.appcompat)
