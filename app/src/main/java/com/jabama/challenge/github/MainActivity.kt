@@ -5,10 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.jabama.challenge.common.constants.CLIENT_ID
+import com.jabama.challenge.common.constants.REDIRECT_URI
 
-const val CLIENT_ID = "CLIENT_ID"
-const val CLIENT_SECRET = "CLIENT_SECRET"
-const val REDIRECT_URI = "REDIRECT_URI"
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
