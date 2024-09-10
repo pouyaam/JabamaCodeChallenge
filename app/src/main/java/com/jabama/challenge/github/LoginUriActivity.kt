@@ -7,14 +7,14 @@ import android.widget.TextView
 import com.jabama.challenge.common.constants.CLIENT_ID
 import com.jabama.challenge.common.constants.CLIENT_SECRET
 import com.jabama.challenge.common.constants.REDIRECT_URI
-import com.jabama.challenge.repository.token.TokenRepository
+import com.jabama.challenge.token.domain.repo.AccessTokenLocalStorage
 import com.jabama.challenge.token.domain.model.request.RequestAccessToken
 import com.jabama.challenge.token.domain.repo.AccessTokenDataSource
 import kotlinx.coroutines.*
 import org.koin.android.ext.android.inject
 
 class LoginUriActivity : Activity() {
-    private val tokenRepository: TokenRepository by inject()
+    private val tokenRepository: AccessTokenLocalStorage by inject()
     private val accessTokenDataSource: AccessTokenDataSource by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {

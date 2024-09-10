@@ -1,8 +1,8 @@
-package com.jabama.challenge.repository.token
+package com.jabama.challenge.token.domain.repo
 
 import kotlinx.coroutines.Deferred
 
-interface TokenRepository {
+interface AccessTokenLocalStorage {
     fun saveToken(token: String) : Deferred<Unit>
     fun readToken(): Deferred<String>
 }
