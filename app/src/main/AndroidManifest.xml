@@ -18,14 +18,11 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <activity android:name="com.jabama.challenge.github.LoginUriActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="challenge" />
+                <data android:scheme="jabamacode" android:host="loginresult" />
             </intent-filter>
         </activity>
 

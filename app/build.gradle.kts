@@ -17,6 +17,13 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.12"
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -36,24 +43,17 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":token"))
+    implementation(project(":feature:login:presentation"))
 
-    implementation(libs.kotlin.stdlib.jdk7)
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.ktx)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.material)
-    implementation(libs.retrofit)
-    implementation(libs.okhttp)
     implementation(libs.koin.android)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.material3)
+    debugImplementation(libs.androidx.ui.tooling)
 
-
-    implementation(libs.kotlin.stdlib.jdk7)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
-    implementation(libs.logging.interceptor)
     implementation(libs.androidx.preference.ktx)
-    implementation(libs.converter.gson)
-    implementation(libs.retrofit2.kotlin.coroutines.adapter)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.runner)

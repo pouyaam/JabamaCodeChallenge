@@ -3,22 +3,78 @@ package com.jabama.challenge.github
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
-import com.jabama.challenge.common.constants.CLIENT_ID
-import com.jabama.challenge.common.constants.REDIRECT_URI
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.jabama.challenge.auth.presentation.AuthenticateScreen
+import com.jabama.challenge.auth.presentation.ClickToLoginScreen
+import com.jabama.challenge.auth.presentation.model.WebLoginResponse
+import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationViewModel
+import com.jabama.challenge.common.constants.GITHUB_WEB_FLOW_URL
+import com.jabama.challenge.navigation.NavigationRoutes
+import com.jabama.challenge.navigation.authenticationArguments
+import com.jabama.challenge.navigation.navigationDeepLinks
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContent {
+            // TODO Material theme will be applied
+                MainAppNavigationScreen(modifier = Modifier)
+        }
+    }
 
-        findViewById<Button>(R.id.authorize).setOnClickListener { view ->
-            val url = "https://github.com/login/oauth/authorize?client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=repo user&state=0"
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            startActivity(i)
+    @Composable
+    fun MainAppNavigationScreen(modifier: Modifier = Modifier) {
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = NavigationRoutes.LoginRoute.route
+        ) {
+            composable(route = NavigationRoutes.LoginRoute.route) {
+                ClickToLoginScreen(
+                    modifier = modifier,
+                    onClick = {
+                        val url = GITHUB_WEB_FLOW_URL
+                        val i = Intent(Intent.ACTION_VIEW)
+                        i.data = Uri.parse(url)
+                        startActivity(i)
+                    }
+                )
+            }
+            composable(
+                route = NavigationRoutes.AuthenticateRoute().route,
+                deepLinks = navigationDeepLinks,
+                arguments = authenticationArguments
+            ) { entry ->
+                val authenticationViewModel by viewModel<AuthenticationViewModel>()
+                val code =
+                    entry.arguments?.getString(NavigationRoutes.AuthenticateRoute().code) ?: ""
+                val state =
+                    entry.arguments?.getString(NavigationRoutes.AuthenticateRoute().state) ?: ""
+                AuthenticateScreen(
+                    modifier = modifier,
+                    webLoginResponse = WebLoginResponse(code, state),
+                    viewModel = authenticationViewModel
+                )
+            }
+            //TODO Search Screen will be here as well
+        }
+    }
+
+    @Preview
+    @Composable
+    private fun PreviewMainAppScreen() {
+        MaterialTheme {
+            MainAppNavigationScreen(modifier = Modifier)
         }
     }
 }
