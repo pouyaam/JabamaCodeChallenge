@@ -17,9 +17,9 @@ const val CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT"
 const val BASE_URL = "BASE_URL"
 val networkModule = module {
 
-    single(named(READ_TIMEOUT)) { 30 * 1000 }
-    single(named(WRITE_TIMEOUT)) { 10 * 1000 }
-    single(named(CONNECTION_TIMEOUT)) { 10 * 1000 }
+    single<Long>(named(READ_TIMEOUT)) { 30 * 1000 }
+    single<Long>(named(WRITE_TIMEOUT)) { 10 * 1000 }
+    single<Long>(named(CONNECTION_TIMEOUT)) { 10 * 1000 }
     single(named(BASE_URL)) { "http://api.github.com/" }
 
     factory<Interceptor> {
@@ -33,7 +33,7 @@ val networkModule = module {
             .readTimeout(get(named(READ_TIMEOUT)), TimeUnit.MILLISECONDS)
             .writeTimeout(get(named(WRITE_TIMEOUT)), TimeUnit.MILLISECONDS)
             .connectTimeout(get(named(CONNECTION_TIMEOUT)), TimeUnit.MILLISECONDS)
-            .addInterceptor(get<HttpLoggingInterceptor>())
+            .addInterceptor(get<Interceptor>())
             .build()
     }
 
