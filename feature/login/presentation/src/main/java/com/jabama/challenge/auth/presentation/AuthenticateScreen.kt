@@ -1,6 +1,6 @@
 package com.jabama.challenge.auth.presentation
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -24,19 +25,28 @@ import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationViewModel
 fun AuthenticateScreen(
     modifier: Modifier = Modifier,
     webLoginResponse: WebLoginResponse,
-    viewModel: AuthenticationViewModel
+    viewModel: AuthenticationViewModel,
+    navigateToSearchScreen: () -> Unit = {},
+    retryLogin: () -> Unit = {},
 ) {
+
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = viewModel.effects) {
         viewModel.effects.collect {
-            //TODO handle this later
             when (it) {
                 is AuthenticationEffects.ResultSuccess -> {
-                    Log.d("AuthenticateScreen", "success")
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.login_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    navigateToSearchScreen()
                 }
 
                 is AuthenticationEffects.ResultFailure -> {
-                    Log.d("AuthenticateScreen", "failed caused by ${it.message.toString()}")
+                    Toast.makeText(context, it.message.asString(context), Toast.LENGTH_LONG).show()
+                    retryLogin()
                 }
             }
         }

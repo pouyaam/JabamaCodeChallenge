@@ -2,6 +2,7 @@
 <resources>
     <string name="click_to_login">Click to Login</string>
     <string name="login_in_progress">Please wait to login</string>
+    <string name="login_success">Login success</string>
     <string name="search_hint">Search for repositories …</string>
     <string name="search_icon_content_description">Search button</string>
     <string name="private_repo_icon_content_description">Private repository</string>

@@ -6,6 +6,7 @@ import com.jabama.challenge.common.constants.CLIENT_ID
 import com.jabama.challenge.common.constants.CLIENT_SECRET
 import com.jabama.challenge.common.constants.REDIRECT_URI
 import com.jabama.challenge.common.utils.UiText
+import com.jabama.challenge.common.utils.toApiCallError
 import com.jabama.challenge.token.domain.model.request.RequestAccessToken
 import com.jabama.challenge.token.domain.repo.AccessTokenDataSource
 import com.jabama.challenge.token.domain.repo.AccessTokenLocalStorage
@@ -43,9 +44,8 @@ class AuthenticationViewModel(
                             _effects.emit(AuthenticationEffects.ResultSuccess)
                         } catch (e: Exception) {
                             coroutineContext.ensureActive()
-                            //TODO we should handle exception scenarios later
                             e.printStackTrace()
-                            _effects.emit(AuthenticationEffects.ResultFailure(UiText.DynamicString(e.message.orEmpty())))
+                            _effects.emit(AuthenticationEffects.ResultFailure(e.toApiCallError().message))
                         }
                     } ?: run {
                         _effects.emit(AuthenticationEffects.ResultFailure(UiText.DynamicString("orEmpty")))
