@@ -8,4 +8,11 @@
     <string name="repo_stars_icon_content_description">Stars count</string>
     <string name="empty_list_placeholder_title">No item to show.</string>
     <string name="empty_list_placeholder_subtitle">Please try a new query.</string>
+
+    <!--  Retrofit errors  -->
+    <string name="auth_error">Authentication failed. Please Login</string>
+    <string name="network_error">Network error. Please check your internet connection and try again.</string>
+    <string name="data_parse_error">Data parse error. Please try again or contact support.</string>
+    <string name="unknown_error">Unknown error. Please try again.</string>
+
 </resources>

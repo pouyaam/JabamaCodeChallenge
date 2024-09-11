@@ -2,7 +2,8 @@ package com.jabama.challenge.search.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jabama.challenge.common.utils.UiText
+import com.jabama.challenge.common.utils.ApiCallError
+import com.jabama.challenge.common.utils.toApiCallError
 import com.jabama.challenge.search.domain.model.SearchResult
 import com.jabama.challenge.search.domain.usecase.GetLanguageColorFromName
 import com.jabama.challenge.search.domain.usecase.SearchForRepository
@@ -72,13 +73,12 @@ class SearchViewModel(
                 }
                 _effects.emit(SearchEffects.ResultSuccess)
             } else {
-                //TODO we should handle exception scenarios later
-                //TODO handle auth failure scenario later
-                _effects.emit(
-                    SearchEffects.ResultFailure(
-                        UiText.DynamicString(result.exceptionOrNull()?.message.orEmpty())
-                    )
-                )
+                val apiCallError = result.exceptionOrNull().toApiCallError()
+                if (apiCallError is ApiCallError.AuthError)
+                    _effects.emit(SearchEffects.AuthFailed)
+                else
+                    _effects.emit(SearchEffects.ResultFailure((apiCallError.message)))
+
                 searchResult = emptyList()
             }
 

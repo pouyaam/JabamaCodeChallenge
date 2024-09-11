@@ -1,11 +1,15 @@
 package com.jabama.challenge.search.presentation.ui
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jabama.challenge.search.presentation.viewmodel.SearchEffects
 import com.jabama.challenge.search.presentation.viewmodel.SearchEvents
@@ -15,27 +19,30 @@ import com.jabama.challenge.search.presentation.viewmodel.SearchViewModel
 fun SearchScreen(
     modifier: Modifier = Modifier,
     viewModel: SearchViewModel,
+    onAuthFailed: () -> Unit = {},
 ) {
+
+    val snackBarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = viewModel.effects) {
         viewModel.effects.collect { effect ->
-            //TODO handle effects
             when (effect) {
-                is SearchEffects.ResultSuccess -> {
-                }
+                is SearchEffects.ResultSuccess -> {}
+                is SearchEffects.ResultFailure -> snackBarHostState.showSnackbar(
+                    message = effect.message.asString(
+                        context
+                    )
+                )
 
-                is SearchEffects.ResultFailure -> {
-                }
-
-                is SearchEffects.AuthFailed -> {
-                }
+                is SearchEffects.AuthFailed -> onAuthFailed()
             }
         }
     }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Scaffold(modifier = modifier, topBar = {
         SearchBar(
             query = state.query,
             showHint = state.isHintVisible,
@@ -49,12 +56,16 @@ fun SearchScreen(
                 viewModel.invokeEvent(SearchEvents.OnSearchFocusChange(it.isFocused))
             },
         )
+    }, snackbarHost = {
+        SnackbarHost(hostState = snackBarHostState)
+    }, content = { paddingValues ->
+        val paddingModifier = Modifier.padding(paddingValues)
         if (state.isSearching) {
-            SearchInProgressPlaceHolder(modifier)
+            SearchInProgressPlaceHolder(paddingModifier)
         } else if (state.searchResult.isEmpty()) {
-            SearchIsEmptyPlaceHolder(modifier)
+            SearchIsEmptyPlaceHolder(paddingModifier)
         } else if (state.searchResult.isNotEmpty()) {
-            SearchResultComposable(modifier, state.searchResult)
+            SearchResultComposable(paddingModifier, state.searchResult)
         }
-    }
+    })
 }
