@@ -44,6 +44,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":token"))
     implementation(project(":feature:login:presentation"))
+    implementation(project(":feature:search:presentation"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.koin.android)

@@ -20,6 +20,8 @@ import com.jabama.challenge.common.constants.GITHUB_WEB_FLOW_URL
 import com.jabama.challenge.navigation.NavigationRoutes
 import com.jabama.challenge.navigation.authenticationArguments
 import com.jabama.challenge.navigation.navigationDeepLinks
+import com.jabama.challenge.search.presentation.ui.SearchScreen
+import com.jabama.challenge.search.presentation.viewmodel.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -37,7 +39,7 @@ class MainActivity : ComponentActivity() {
         val navController = rememberNavController()
         NavHost(
             navController = navController,
-            startDestination = NavigationRoutes.LoginRoute.route
+            startDestination = NavigationRoutes.SearchRoute.route
         ) {
             composable(route = NavigationRoutes.LoginRoute.route) {
                 ClickToLoginScreen(
@@ -66,7 +68,15 @@ class MainActivity : ComponentActivity() {
                     viewModel = authenticationViewModel
                 )
             }
-            //TODO Search Screen will be here as well
+            composable(
+                route = NavigationRoutes.SearchRoute.route,
+            ) {
+                val searchViewModel by viewModel<SearchViewModel>()
+                SearchScreen(
+                    modifier = modifier,
+                    viewModel = searchViewModel,
+                )
+            }
         }
     }
 
