@@ -31,19 +31,31 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 }
 
 dependencies {
 
+    implementation(project(":common"))
+    implementation(project(":feature:search:domain"))
+    implementation(project(":feature:search:data"))
+
+    implementation(libs.koin.android)
+
+    implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.core)
+
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.material3)
     implementation(libs.compose.glide)
+    debugImplementation(libs.androidx.ui.tooling)
+
+    implementation(libs.retrofit)
 
 }
