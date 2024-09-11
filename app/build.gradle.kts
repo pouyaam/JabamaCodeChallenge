@@ -43,13 +43,13 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":token"))
+    implementation(project(":design"))
     implementation(project(":feature:login:presentation"))
     implementation(project(":feature:search:presentation"))
 
     implementation(libs.androidx.ktx)
     implementation(libs.koin.android)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.material3)
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.kotlinx.coroutines.core)

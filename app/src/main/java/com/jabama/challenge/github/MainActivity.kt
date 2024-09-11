@@ -5,7 +5,6 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -17,6 +16,7 @@ import com.jabama.challenge.auth.presentation.ClickToLoginScreen
 import com.jabama.challenge.auth.presentation.model.WebLoginResponse
 import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationViewModel
 import com.jabama.challenge.common.constants.GITHUB_WEB_FLOW_URL
+import com.jabama.challenge.design.theme.AppTheme
 import com.jabama.challenge.navigation.NavigationRoutes
 import com.jabama.challenge.navigation.authenticationArguments
 import com.jabama.challenge.navigation.navigationDeepLinks
@@ -29,8 +29,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // TODO Material theme will be applied
+            AppTheme {
                 MainAppNavigationScreen(modifier = Modifier)
+            }
         }
     }
 
@@ -90,7 +91,7 @@ class MainActivity : ComponentActivity() {
     @Preview
     @Composable
     private fun PreviewMainAppScreen() {
-        MaterialTheme {
+        AppTheme {
             MainAppNavigationScreen(modifier = Modifier)
         }
     }
