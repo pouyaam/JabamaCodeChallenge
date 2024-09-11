@@ -75,6 +75,13 @@ class MainActivity : ComponentActivity() {
                 SearchScreen(
                     modifier = modifier,
                     viewModel = searchViewModel,
+                    onAuthFailed = {
+                        navController.navigate(NavigationRoutes.LoginRoute.route) {
+                            popUpTo(NavigationRoutes.SearchRoute.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
                 )
             }
         }
