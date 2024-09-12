@@ -1,28 +1,23 @@
 package com.jabama.challenge.token.domain.usecase
 
-import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.google.gson.JsonParseException
 import com.jabama.challenge.token.data.api.AccessTokenService
-import com.jabama.challenge.token.domain.data.FakePreferences
-import com.jabama.challenge.token.domain.data.FakeTokenRepository
+import com.jabama.challenge.token.fakes.FakePreferences
+import com.jabama.challenge.token.fakes.FakeTokenRepository
 import com.jabama.challenge.token.domain.model.response.ResponseAccessToken
 import com.jabama.challenge.token.domain.preferences.AbstractPreferences
 import com.jabama.challenge.token.domain.repo.TokenRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.runBlocking
 import okhttp3.ResponseBody
-import okhttp3.mockwebserver.MockResponse
 import org.junit.Before
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import java.text.ParseException
 
 class RefreshAccessTokenTest {
 

@@ -1,4 +1,4 @@
-package com.jabama.challenge.token.domain.data
+package com.jabama.challenge.token.fakes
 
 import com.jabama.challenge.token.domain.preferences.AbstractPreferences
 

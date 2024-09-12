@@ -3,8 +3,8 @@ package com.jabama.challenge.token.domain.usecase
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import com.jabama.challenge.token.data.api.AccessTokenService
-import com.jabama.challenge.token.domain.data.FakePreferences
-import com.jabama.challenge.token.domain.data.FakeTokenRepository
+import com.jabama.challenge.token.fakes.FakePreferences
+import com.jabama.challenge.token.fakes.FakeTokenRepository
 import com.jabama.challenge.token.domain.model.request.RequestAccessToken
 import com.jabama.challenge.token.domain.model.response.ResponseAccessToken
 import com.jabama.challenge.token.domain.preferences.AbstractPreferences

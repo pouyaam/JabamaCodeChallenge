@@ -1,13 +1,9 @@
-package com.jabama.challenge.token.domain.data
+package com.jabama.challenge.token.fakes
 
 import com.jabama.challenge.token.data.api.AccessTokenService
 import com.jabama.challenge.token.domain.model.request.RequestAccessToken
 import com.jabama.challenge.token.domain.preferences.AbstractPreferences
 import com.jabama.challenge.token.domain.repo.TokenRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
 
 class FakeTokenRepository(
     private val preferences: AbstractPreferences,
