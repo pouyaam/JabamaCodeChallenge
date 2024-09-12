@@ -3,23 +3,110 @@ package com.jabama.challenge.github
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.jabama.challenge.auth.presentation.AuthenticateScreen
+import com.jabama.challenge.auth.presentation.ClickToLoginScreen
+import com.jabama.challenge.auth.presentation.model.WebLoginResponse
+import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationViewModel
+import com.jabama.challenge.common.constants.GITHUB_WEB_FLOW_URL
+import com.jabama.challenge.design.theme.AppTheme
+import com.jabama.challenge.navigation.NavigationRoutes
+import com.jabama.challenge.navigation.authenticationArguments
+import com.jabama.challenge.navigation.navigationDeepLinks
+import com.jabama.challenge.search.presentation.ui.SearchScreen
+import com.jabama.challenge.search.presentation.viewmodel.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-const val CLIENT_ID = "CLIENT_ID"
-const val CLIENT_SECRET = "CLIENT_SECRET"
-const val REDIRECT_URI = "REDIRECT_URI"
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContent {
+            AppTheme {
+                MainAppNavigationScreen(modifier = Modifier)
+            }
+        }
+    }
 
-        authorize.setOnClickListener { view ->
-            val url = "https://github.com/login/oauth/authorize?client_id=$CLIENT_ID&redirect_uri=$REDIRECT_URI&scope=repo user&state=0"
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(url)
-            startActivity(i)
+    @Composable
+    fun MainAppNavigationScreen(modifier: Modifier = Modifier) {
+        val navController = rememberNavController()
+        NavHost(
+            navController = navController,
+            startDestination = NavigationRoutes.SearchRoute.route
+        ) {
+            composable(route = NavigationRoutes.LoginRoute.route) {
+                ClickToLoginScreen(
+                    modifier = modifier,
+                    onClick = {
+                        val url = GITHUB_WEB_FLOW_URL
+                        val i = Intent(Intent.ACTION_VIEW)
+                        i.data = Uri.parse(url)
+                        startActivity(i)
+                    }
+                )
+            }
+            composable(
+                route = NavigationRoutes.AuthenticateRoute().route,
+                deepLinks = navigationDeepLinks,
+                arguments = authenticationArguments
+            ) { entry ->
+                val authenticationViewModel by viewModel<AuthenticationViewModel>()
+                val code =
+                    entry.arguments?.getString(NavigationRoutes.AuthenticateRoute().code) ?: ""
+                val state =
+                    entry.arguments?.getString(NavigationRoutes.AuthenticateRoute().state) ?: ""
+                AuthenticateScreen(
+                    modifier = modifier,
+                    webLoginResponse = WebLoginResponse(code, state),
+                    navigateToSearchScreen = {
+                        navController.navigate(NavigationRoutes.SearchRoute.route) {
+                            popUpTo(NavigationRoutes.AuthenticateRoute().route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    retryLogin = {
+                        navController.navigate(NavigationRoutes.LoginRoute.route) {
+                            popUpTo(NavigationRoutes.AuthenticateRoute().route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    viewModel = authenticationViewModel
+                )
+            }
+            composable(
+                route = NavigationRoutes.SearchRoute.route,
+            ) {
+                val searchViewModel by viewModel<SearchViewModel>()
+                SearchScreen(
+                    modifier = modifier,
+                    viewModel = searchViewModel,
+                    onAuthFailed = {
+                        navController.navigate(NavigationRoutes.LoginRoute.route) {
+                            popUpTo(NavigationRoutes.SearchRoute.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    @Preview
+    @Composable
+    private fun PreviewMainAppScreen() {
+        AppTheme {
+            MainAppNavigationScreen(modifier = Modifier)
         }
     }
 }
