@@ -19,6 +19,9 @@ import com.jabama.challenge.auth.presentation.model.WebLoginResponse
 import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationEffects
 import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationEvents
 import com.jabama.challenge.auth.presentation.viewmodel.AuthenticationViewModel
+import com.jabama.challenge.token.domain.model.request.RequestAccessToken
+import com.jabama.challenge.token.domain.repo.TokenRepository
+import com.jabama.challenge.token.domain.usecase.RefreshAccessToken
 
 
 @Composable
@@ -73,7 +76,14 @@ fun AuthenticateScreen(
 @Composable
 private fun PreviewAuthenticateScreen() {
     MaterialTheme {
-        //TODO provide fake repository to create viewModel in preview and test functions
-//        AuthenticateScreen(code = "", state = 0, viewModel = AuthenticationViewModel())
+        AuthenticateScreen(
+            webLoginResponse = WebLoginResponse(),
+            viewModel = AuthenticationViewModel(
+                RefreshAccessToken(object : TokenRepository {
+                    override suspend fun refreshAccessToken(requestAccessToken: RequestAccessToken) {}
+                    override fun readToken() = ""
+                })
+            )
+        )
     }
 }
