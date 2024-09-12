@@ -66,6 +66,20 @@ class MainActivity : ComponentActivity() {
                 AuthenticateScreen(
                     modifier = modifier,
                     webLoginResponse = WebLoginResponse(code, state),
+                    navigateToSearchScreen = {
+                        navController.navigate(NavigationRoutes.SearchRoute.route) {
+                            popUpTo(NavigationRoutes.AuthenticateRoute().route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    retryLogin = {
+                        navController.navigate(NavigationRoutes.LoginRoute.route) {
+                            popUpTo(NavigationRoutes.AuthenticateRoute().route) {
+                                inclusive = true
+                            }
+                        }
+                    },
                     viewModel = authenticationViewModel
                 )
             }
