@@ -58,4 +58,11 @@ dependencies {
 
     implementation(libs.retrofit)
 
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.core)
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.ui.tooling)
+    androidTestImplementation(libs.androidx.foundation)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
 }

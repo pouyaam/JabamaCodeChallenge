@@ -1,4 +1,4 @@
-package com.jabama.challenge.search.domain.data
+package com.jabama.challenge.search.domain.fakes
 
 import com.jabama.challenge.search.domain.model.SearchResult
 import com.jabama.challenge.search.domain.repo.SearchRepository

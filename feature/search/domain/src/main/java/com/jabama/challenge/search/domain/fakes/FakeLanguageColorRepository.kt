@@ -1,4 +1,4 @@
-package com.jabama.challenge.search.domain.data
+package com.jabama.challenge.search.domain.fakes
 
 import android.content.res.Resources.NotFoundException
 import com.jabama.challenge.search.domain.repo.LanguageColorRepository
@@ -13,7 +13,7 @@ class FakeLanguageColorRepository : LanguageColorRepository {
     )
 
     override suspend fun getLanguageColor(language: String): Int {
-        languageColors.get(language)?.let {
+        languageColors.get(language.lowercase())?.let {
             return it
         } ?: run {
             throw NotFoundException()

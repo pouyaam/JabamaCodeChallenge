@@ -3,7 +3,7 @@ package com.jabama.challenge.search.domain
 import assertk.assertFailure
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import com.jabama.challenge.search.domain.data.FakeLanguageColorRepository
+import com.jabama.challenge.search.domain.fakes.FakeLanguageColorRepository
 import com.jabama.challenge.search.domain.repo.LanguageColorRepository
 import com.jabama.challenge.search.domain.usecase.GetLanguageColorFromName
 import kotlinx.coroutines.runBlocking

@@ -1,11 +1,10 @@
 package com.jabama.challenge.search.domain
 
 import assertk.assertThat
-import assertk.assertions.isInstanceOf
 import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isTrue
-import com.jabama.challenge.search.domain.data.FakeSearchRepository
+import com.jabama.challenge.search.domain.fakes.FakeSearchRepository
 import com.jabama.challenge.search.domain.repo.SearchRepository
 import com.jabama.challenge.search.domain.usecase.SearchForRepository
 import kotlinx.coroutines.runBlocking
