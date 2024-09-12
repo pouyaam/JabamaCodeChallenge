@@ -1,6 +1,5 @@
 package com.jabama.challenge.common.di
 
-import android.content.SharedPreferences
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -17,6 +16,7 @@ const val WRITE_TIMEOUT = "WRITE_TIMEOUT"
 const val CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT"
 const val HTTP_LOGGING_INTERCEPTOR = "HTTP_LOGGING_INTERCEPTOR"
 const val HEADERS_INTERCEPTOR = "HEADERS_INTERCEPTOR"
+const val ACCESS_TOKEN = "ACCESS_TOKEN"
 const val BASE_URL = "BASE_URL"
 val networkModule = module {
 
@@ -38,7 +38,7 @@ val networkModule = module {
                 .newBuilder()
                 .addHeader(
                     "Authorization",
-                    "Bearer ${get<SharedPreferences>().getString("TOKEN", "")}"
+                    "Bearer ${get<String>(named(ACCESS_TOKEN))}"
                 )
                 .build()
             chain.proceed(request)

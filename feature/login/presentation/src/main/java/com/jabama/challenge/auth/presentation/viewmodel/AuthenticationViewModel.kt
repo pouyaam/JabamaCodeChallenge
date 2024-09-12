@@ -2,22 +2,16 @@ package com.jabama.challenge.auth.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jabama.challenge.common.constants.CLIENT_ID
-import com.jabama.challenge.common.constants.CLIENT_SECRET
-import com.jabama.challenge.common.constants.REDIRECT_URI
 import com.jabama.challenge.common.utils.UiText
 import com.jabama.challenge.common.utils.toApiCallError
-import com.jabama.challenge.token.domain.model.request.RequestAccessToken
-import com.jabama.challenge.token.domain.repo.AccessTokenDataSource
-import com.jabama.challenge.token.domain.repo.AccessTokenLocalStorage
+import com.jabama.challenge.token.domain.usecase.RefreshAccessToken
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 class AuthenticationViewModel(
-    private val tokenRepository: AccessTokenLocalStorage,
-    private val accessTokenDataSource: AccessTokenDataSource,
+    private val refreshAccessToken: RefreshAccessToken,
 ) : ViewModel() {
 
     private val _effects = MutableSharedFlow<AuthenticationEffects>()
@@ -31,16 +25,7 @@ class AuthenticationViewModel(
                 viewModelScope.launch {
                     code.takeIf { it.isNotEmpty() }?.let { code ->
                         try {
-                            val response = accessTokenDataSource.accessToken(
-                                RequestAccessToken(
-                                    CLIENT_ID,
-                                    CLIENT_SECRET,
-                                    code,
-                                    REDIRECT_URI,
-                                    state
-                                )
-                            )
-                            tokenRepository.saveToken(response.accessToken).await()
+                            refreshAccessToken(code, state)
                             _effects.emit(AuthenticationEffects.ResultSuccess)
                         } catch (e: Exception) {
                             coroutineContext.ensureActive()
