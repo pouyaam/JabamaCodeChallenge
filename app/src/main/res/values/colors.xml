@@ -3,4 +3,38 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <!-- Primary App Colors -->
+    <!-- A green button color -->
+    <color name="primary_button_color">#4CAF50</color>
+    <!-- An orange color for secondary buttons -->
+    <color name="secondary_button_color">#FF9800</color>
+    <!-- Light grey border for EditText -->
+    <color name="border_color">#DDDDDD</color>
+
+    <!-- Text Colors -->
+    <!-- Black text color -->
+    <color name="text_color">#000000</color>
+    <!-- Grey hint text color -->
+    <color name="text_hint_color">#888888</color>
+
+
+    <!-- Background Colors -->
+    <!-- Light grey background color -->
+    <color name="background_color">#F5F5F5</color>
+    <!-- White card background -->
+    <color name="card_background_color">#FFFFFF</color>
+
+    <!-- Shadow Colors -->
+    <!-- Semi-transparent shadow for elements -->
+    <color name="shadow_color">#50000000</color>
+
+    <!-- Icon Colors -->
+    <!-- Black icon color -->
+    <color name="icon_color">#000000</color>
+
+    <!-- Other Colors -->
+    <!-- Red for error messages -->
+    <color name="error_color">#F44336</color>
+    <!-- Green for success messages -->
+    <color name="success_color">#4CAF50</color>
 </resources>
