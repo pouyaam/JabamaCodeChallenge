@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7036906170",
+    "project_id": "github-30ec6",
+    "storage_bucket": "github-30ec6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7036906170:android:35644ff14ceecad886b083",
+        "android_client_info": {
+          "package_name": "com.jabama.challenge.github"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhj7MeWiCC_Af6sWMAs6AunkHs2He6fiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
