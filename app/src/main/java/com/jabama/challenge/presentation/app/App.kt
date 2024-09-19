@@ -2,7 +2,14 @@ package com.jabama.challenge.presentation.app
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
+import com.google.firebase.auth.FirebaseAuth
+import com.jabama.challenge.data.auth.AuthRepository
+import com.jabama.challenge.data.auth.AuthRepositoryImpl
+import com.jabama.challenge.domain.auth.SignInWithGithubUseCase
+import com.jabama.challenge.domain.auth.SignInWithGithubUseCaseImpl
+import com.jabama.challenge.presentation.auth.AuthViewModel
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
@@ -14,15 +21,15 @@ class App : Application() {
         super.onCreate()
         FirebaseApp.initializeApp(this)
         startKoin {
-            androidContext(this@App)
-//            modules(listOf(appModule, networkModule, accessTokenModule))
+            androidContext(this@App) // Provide the application context
+            modules(appModule)
         }
     }
 
-    val appModule = module {
-//        factory { TokenRepositoryImpl(get()) }
-//        single(named(APPLICATION_CONTEXT)) { applicationContext }
-//        single { PreferenceManager.getDefaultSharedPreferences(get()) }
+    private val appModule = module {
+        single { FirebaseAuth.getInstance() }
+        single<AuthRepository> { AuthRepositoryImpl(get()) }
+        single<SignInWithGithubUseCase> { SignInWithGithubUseCaseImpl(get()) }
+        viewModel { AuthViewModel(get()) }
     }
-
 }

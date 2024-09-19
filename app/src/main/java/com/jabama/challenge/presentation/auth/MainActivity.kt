@@ -7,48 +7,39 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.jabama.challenge.github.databinding.ActivityMainBinding
 import com.jabama.challenge.presentation.search.SearchActivity
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
+// MainActivity.kt
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val authViewModel: AuthViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialize ViewModel
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        authViewModel.user.observe(this) { user ->
+            navigateToSearchActivity(user.displayName)
+            showToast("Login Successfully")
+        }
 
-        // Observe LiveData from ViewModel
-        observeViewModel()
+        authViewModel.error.observe(this) { error ->
+            showToast("Error: $error")
+        }
 
-        // Handle login button click
         binding.githubLoginBtn.setOnClickListener {
             val githubId = binding.githubId.text.toString()
-            when (githubId.isEmpty()) {
-                true -> showToast("Enter your GitHub ID")
-                false -> viewModel.signInWithGithub(githubId = githubId, activity = this)
+            if (githubId.isEmpty()) {
+                showToast("Enter your GitHub ID")
+            } else {
+                authViewModel.signIn(githubId, this)
             }
         }
     }
 
-    private fun observeViewModel() {
-        // Observe login status updates
-        viewModel.loginStatus.observe(this) { message ->
-            showToast(message)
-        }
-
-        // Observe navigation to SearchActivity
-        viewModel.navigateToSearchActivity.observe(this) { githubUserName ->
-            githubUserName?.let {
-                navigateToSearchActivity(it)
-            }
-        }
-    }
-
-    private fun navigateToSearchActivity(githubUserName: String) {
+    private fun navigateToSearchActivity(githubUserName: String?) {
         Intent(this, SearchActivity::class.java).apply {
             putExtra("githubUserName", githubUserName)
         }.also {
@@ -56,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun showToast(message: String) =
+    private fun showToast(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+    }
 }

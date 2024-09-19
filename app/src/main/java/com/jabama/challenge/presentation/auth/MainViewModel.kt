@@ -3,40 +3,32 @@ package com.jabama.challenge.presentation.auth
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.OAuthProvider
+import com.google.firebase.auth.FirebaseUser
+import com.jabama.challenge.domain.auth.SignInWithGithubUseCase
+import com.jabama.challenge.presentation.AuthCallback
 
-class MainViewModel : ViewModel() {
+// AuthViewModel.kt
+class AuthViewModel(private val signInWithGithubUseCase: SignInWithGithubUseCase) : ViewModel() {
 
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val provider = OAuthProvider.newBuilder("github.com")
-    private val _loginStatus = MutableLiveData<String>()
-    val loginStatus: LiveData<String> get() = _loginStatus
-    private val _navigateToSearchActivity = MutableLiveData<String?>()
-    val navigateToSearchActivity: LiveData<String?> get() = _navigateToSearchActivity
+    private val _user = MutableLiveData<FirebaseUser>()
+    val user: LiveData<FirebaseUser> get() = _user
 
-    init {
-        provider.scopes = listOf("user:email")
-    }
+    private val _error = MutableLiveData<Exception>()
+    val error: LiveData<Exception> get() = _error
 
-    fun signInWithGithub(githubId: String, activity: MainActivity) {
-        if (auth.pendingAuthResult != null) {
-            auth.pendingAuthResult?.addOnSuccessListener {
-                _loginStatus.postValue("User exists")
-            }?.addOnFailureListener { error ->
-                _loginStatus.postValue("Error: $error")
-            }
-        } else {
-            provider.addCustomParameter("login", githubId)
-            auth.startActivityForSignInWithProvider(activity, provider.build())
-                .addOnSuccessListener { authResult ->
-                    val firebaseUser = authResult?.user
-                    _navigateToSearchActivity.postValue(firebaseUser?.displayName)
-                    _loginStatus.postValue("Login Successfully")
+    fun signIn(githubId: String, activity: MainActivity) {
+        signInWithGithubUseCase.execute(
+            githubId = githubId,
+            callback = object : AuthCallback {
+                override fun onSuccess(user: FirebaseUser) {
+                    _user.postValue(user)
                 }
-                .addOnFailureListener { error ->
-                    _loginStatus.postValue("Error: $error")
+
+                override fun onFailure(error: Exception) {
+                    _error.postValue(error)
                 }
-        }
+            },
+            activity = activity
+        )
     }
 }
