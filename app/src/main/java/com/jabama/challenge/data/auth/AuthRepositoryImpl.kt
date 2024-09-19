@@ -5,7 +5,7 @@ import com.google.firebase.auth.OAuthProvider
 import com.jabama.challenge.presentation.AuthCallback
 import com.jabama.challenge.presentation.auth.MainActivity
 
-// AuthRepositoryImpl.kt
+// SearchRepositoryImpl.kt
 class AuthRepositoryImpl(private val auth: FirebaseAuth) : AuthRepository {
     override fun signInWithGithub(
         githubId: String,
