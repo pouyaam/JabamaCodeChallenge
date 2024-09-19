@@ -1,32 +1,55 @@
 package com.jabama.challenge.presentation.search
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.jabama.challenge.github.R
-import com.jabama.challenge.presentation.auth.MainActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.jabama.challenge.github.databinding.ActivitySearchBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
-
-    var userName = ""
-
-    private lateinit var githubUserName: TextView
-    private lateinit var logoutBtn: Button
+    private lateinit var binding: ActivitySearchBinding
+    private val authViewModel: SearchViewModel by viewModel()
+    private val repositoryAdapter = RepositoryAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        binding = ActivitySearchBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        githubUserName = findViewById(R.id.id)
-        logoutBtn = findViewById(R.id.logOut)
-        userName = intent.getStringExtra("githubUserName")!!
-        githubUserName.text = userName
+        setupRecyclerView()
+        observeViewModel()
 
-        logoutBtn.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            this.startActivity(intent)
+        binding.searchButton.setOnClickListener {
+            val query = binding.searchEditText.text.toString()
+            if (query.isNotEmpty()) {
+                authViewModel.searchRepositories(query)
+            } else {
+                Snackbar.make(binding.root, "Enter a query", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun setupRecyclerView() {
+        binding.repositoriesRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.repositoriesRecyclerView.adapter = repositoryAdapter
+    }
+
+    private fun observeViewModel() {
+        authViewModel.repositories.observe(this) { repositories ->
+            repositoryAdapter.submitList(repositories)
+        }
+
+        authViewModel.isLoading.observe(this) { isLoading ->
+            // Show or hide progress bar (if you add one)
+        }
+
+        authViewModel.errorMessage.observe(this) { error ->
+            error?.let {
+                Log.e("SearchActivity", "Error: $it")
+                Snackbar.make(binding.root, it, Snackbar.LENGTH_SHORT).show()
+            }
         }
     }
 }
