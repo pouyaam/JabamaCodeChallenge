@@ -13,12 +13,12 @@ import retrofit2.http.Query
 interface ApiService {
     @Headers("Accept: application/json")
     @POST("login/oauth/access_token")
-    fun accessToken(@Body requestAccessTokenDto: RequestAccessTokenDto): ResponseAccessTokenDto
+    suspend fun accessToken(@Body requestAccessTokenDto: RequestAccessTokenDto): ResponseAccessTokenDto
 
     @Headers("Accept: application/json")
     @GET("user/repos")
-    fun getUserRepositories(
+    suspend fun getUserRepositories(
         @Header("Authorization") token: String,
         @Query("type") type: String = "owner"
-    ):List<RepositoryDto>
+    ): List<RepositoryDto>
 }
