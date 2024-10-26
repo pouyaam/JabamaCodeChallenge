@@ -1,10 +1,8 @@
 package com.jabama.challenge.di
 
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.core.scope.Scope
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -15,35 +13,31 @@ private const val WRITE_TIMEOUT = 10 * 1000L
 private const val READ_TIMEOUT = 30 * 1000L
 
 val networkModule = module {
-    single { retrofitHttpClient() }
-    single { retrofitBuilder() }
     single { getLogger() }
-
+    single { retrofitHttpClient(get()) }
+    single { retrofitBuilder(get()) }
 }
 
 fun getLogger(): Interceptor {
     val logger = HttpLoggingInterceptor()
-    logger.setLevel(HttpLoggingInterceptor.Level.HEADERS)
     logger.setLevel(HttpLoggingInterceptor.Level.BODY)
     return logger
 }
 
-
-private fun Scope.retrofitBuilder(): Retrofit {
+private fun retrofitBuilder(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .baseUrl("https://api.github.com")
         .addConverterFactory(GsonConverterFactory.create())
-        .addCallAdapterFactory(CoroutineCallAdapterFactory())
-        .client(get())
+        .client(okHttpClient)
         .build()
 }
 
-private fun Scope.retrofitHttpClient(): OkHttpClient {
+private fun retrofitHttpClient(logger: Interceptor): OkHttpClient {
     return OkHttpClient.Builder().apply {
-        connectTimeout(CONNECT_TIMEOUT, TimeUnit.SECONDS)
-        writeTimeout(WRITE_TIMEOUT, TimeUnit.SECONDS)
-        readTimeout(READ_TIMEOUT, TimeUnit.SECONDS)
+        connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
+        writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
+        readTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS)
         retryOnConnectionFailure(true)
-        addInterceptor(get())
+        addInterceptor(logger)
     }.build()
 }
