@@ -21,10 +21,10 @@ internal fun ResponseAccessTokenDto.mapToResponseAccessToken() = ResponseAccessT
 )
 
 internal fun RepositoryDto.mapToRepository() = Repository(
-    name = name,
-    language = language,
+    name = name.orEmpty(),
+    language = language.orEmpty(),
     isFavorite = isFavorite,
     stargazers_count = stargazers_count,
-    updated_at = updated_at,
-    visibility = visibility,
+    updated_at = updated_at.orEmpty(),
+    visibility = visibility.orEmpty(),
 )
