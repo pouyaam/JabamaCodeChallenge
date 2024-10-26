@@ -16,7 +16,7 @@ import org.koin.dsl.module
 
 val githubModule = module {
 
-    single<IGithubRepository> { GithubRepositoryImpl(get()) }
+    single<IGithubRepository> { GithubRepositoryImpl(get(),get()) }
     single<ITokenRepository> { TokenRepositoryImpl(get(), coroutineDispatcherProvider()) }
 
     single { TokenRepositoryImpl(get(), coroutineDispatcherProvider()) }

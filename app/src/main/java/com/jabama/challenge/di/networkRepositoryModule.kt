@@ -12,27 +12,33 @@ private const val CONNECT_TIMEOUT = 10 * 1000L
 private const val WRITE_TIMEOUT = 10 * 1000L
 private const val READ_TIMEOUT = 30 * 1000L
 
-val networkModule = module {
-    single { getLogger() }
-    single { retrofitHttpClient(get()) }
-    single { retrofitBuilder(get()) }
-}
 
+val networkRepositoryModule= module{
+    single { retrofitApiClient(get()) }
+}
 fun getLogger(): Interceptor {
     val logger = HttpLoggingInterceptor()
     logger.setLevel(HttpLoggingInterceptor.Level.BODY)
     return logger
 }
 
-private fun retrofitBuilder(okHttpClient: OkHttpClient): Retrofit {
+
+fun retrofitAccessTokenClient(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
         .baseUrl("https://github.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
 }
+private fun retrofitApiClient(okHttpClient: OkHttpClient): Retrofit {
+    return Retrofit.Builder()
+        .baseUrl("https://api.github.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .client(okHttpClient)
+        .build()
+}
 
-private fun retrofitHttpClient(logger: Interceptor): OkHttpClient {
+fun retrofitHttpClient(logger: Interceptor): OkHttpClient {
     return OkHttpClient.Builder().apply {
         connectTimeout(CONNECT_TIMEOUT, TimeUnit.MILLISECONDS)
         writeTimeout(WRITE_TIMEOUT, TimeUnit.MILLISECONDS)
