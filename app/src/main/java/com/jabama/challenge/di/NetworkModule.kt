@@ -26,7 +26,7 @@ fun getLogger(): Interceptor {
 
 private fun retrofitBuilder(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()
-        .baseUrl("https://api.github.com")
+        .baseUrl("https://github.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(okHttpClient)
         .build()
