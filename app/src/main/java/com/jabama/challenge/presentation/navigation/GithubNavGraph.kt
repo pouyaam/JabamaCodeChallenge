@@ -42,7 +42,7 @@ internal fun GithubNavGraph() {
                 val context = LocalContext.current
                 val currentIntent = (context as Activity).intent
                 val authorizeViewModel = getViewModel<AuthorizeViewModel>()
-                LaunchedEffect(currentIntent) {
+                LaunchedEffect(currentIntent.data) {
                     currentIntent.data?.let {
                         getTokenAndHandleDeepLink(
                             uri = it,
