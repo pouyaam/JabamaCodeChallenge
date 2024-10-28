@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="authorize">AUTHORIZE</string>
+    <string name="press_authorize">Please, press the button!</string>
+    <string name="error_message">Unfortunately, an error has occurred.</string>
+</resources>

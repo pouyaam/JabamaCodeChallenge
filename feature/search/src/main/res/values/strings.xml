@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="top_bar">Repositories</string>
+    <string name="search_hint">Search…</string>
+    <string name="language">Language: %1$s</string>
+    <string name="noData">No data</string>
+</resources>
